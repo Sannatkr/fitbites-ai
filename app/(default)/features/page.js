@@ -65,10 +65,10 @@ export default function Features() {
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-900 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="bg-white mt-10 dark:bg-gray-900 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-          Dietitian AI Features
+          FitBites AI Features
         </h1>
 
         <section className="mb-16">
