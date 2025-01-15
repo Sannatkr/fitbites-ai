@@ -64,13 +64,14 @@ export async function analyzeFood(base64Image) {
                       {"vitamins": "A (in mcg), C (in mg), D (in mcg), E (in mg)"},
                       {"minerals": "Calcium (in mg), Phosphorus (in mg), Iron (in mg), Zinc (in mcg), Magnesium (in mg), Sodium (in mg)"},
                       {"diet compatibility": "Examples: Vegan, Low-fat, High-protein, etc."},
-                      {"summary": "Create a detailed 1000-character report summary that includes the food name, its country or region of origin, and a comprehensive breakdown of all key nutritional values (macronutrients, micronutrients, fiber, sugar, etc.) to assist doctors and dieticians in analyzing its health benefits, risks, and relevance for fitness or medical purposes in a clear and professional manner."}
+                      {"summary": "Create a detailed 1000-character report summary that includes the food name, its country or region of origin, and a comprehensive breakdown of all key nutritional estimated values (macronutrients, micronutrients, fiber, sugar, etc.) to assist doctors and dieticians in analyzing its health benefits, risks, and relevance for fitness or medical purposes in a clear and professional manner."}
                   ]
                     Strict Notes:
                     - Use standard nutritional averages for calculations.
                     - Always include units for all nutritional values.
                     - Do not exaggerate nutritional values especially; estimates must be close to actual values based on the portion size.
                     - Only return the final nutrition JSON array in response.
+                    - I am STRICTLY telling you nothing should be the part of response other than Json array of nutritional values of length 10, based on format.
                     - Above given json array is nutrition data format dont return that, only return final nutrition JSON array in response when get estimated from the meal
               `,
             },

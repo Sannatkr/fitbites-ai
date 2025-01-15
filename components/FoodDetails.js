@@ -108,7 +108,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                   }`}
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.01 }}
+                  transition={{ delay: index * 0.2 }}
                   whileHover={{ scale: 1.01 }}
                 >
                   <td className="px-8 py-5 text-lg font-bold text-blue-800 dark:text-blue-100 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-300">
@@ -153,7 +153,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 2 }}
           >
             {isLoading ? (
               <div className="space-y-6 mt-4">
@@ -182,14 +182,17 @@ export default function FoodDetails({ nutritionData, foodImage }) {
             ) : mealAnalysis &&
               Array.isArray(mealAnalysis) &&
               mealAnalysis.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-4 overflow-y-auto max-h-screen">
                 {mealAnalysis.map((point, index) => (
-                  <p
+                  <motion.p
                     key={index}
-                    className="text-gray-700 dark:text-gray-300 text-xl font-normal"
+                    className="text-gray-700 dark:text-gray-300 text-lg md:text-xl leading-relaxed tracking-wide transition-colors duration-300 py-2.5 px-3 rounded-lg shadow-lg bg-gradient-to-r from-blue-100 via-white/30 to-purple-200 dark:from-gray-900 font-sans dark:via-gray-800 dark:to-gray-900"
+                    initial={{ opacity: 0, y: 20 }} // Starts off slightly below and invisible
+                    animate={{ opacity: 1, y: 0 }} // Fades in and moves to its normal position
+                    transition={{ duration: 0.5, delay: index * 0.3 }} // Adds a slight delay for each card
                   >
                     {point}
-                  </p>
+                  </motion.p>
                 ))}
               </div>
             ) : (
