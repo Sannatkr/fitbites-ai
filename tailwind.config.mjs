@@ -9,6 +9,16 @@ export default {
   theme: {
     extend: {
       animation: {
+        shine: "shine 4s ease-in-out infinite",
+      },
+      keyframes: {
+        shine: {
+          to: {
+            "background-position": "200% center",
+          },
+        },
+      },
+      animation: {
         wiggle: "wiggle 1s ease-in-out infinite",
       },
       keyframes: {

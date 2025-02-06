@@ -1,87 +1,64 @@
 "use client";
-
-import { useRef, useEffect, useState } from "react";
-import Hero from "../../components/Hero";
-import FoodDetails from "../../components/FoodDetails";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import LoginForm from "@/components/LoginForm";
+import WelcomeForm from "@/components/WelcomeForm";
 
 export default function Home() {
-  const foodDetailsRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false); // Add scrolling state
+  const [pageState, setPageState] = useState({
+    isLoading: true,
+    showWelcome: false,
+    phoneNumber: "",
+  });
+  const router = useRouter();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isScrolling) {
-          // Only set visible if not already scrolling
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.1,
-      }
-    );
-
-    if (foodDetailsRef.current) {
-      observer.observe(foodDetailsRef.current);
+    // Check if the token exists in the cookies
+    const token = Cookies.get("token");
+    if (token) {
+      // Redirect to the dashboard if the token exists
+      router.replace("/dashboard");
+    } else {
+      // If no token, set loading to false to show the login form
+      setPageState((prev) => ({ ...prev, isLoading: false }));
     }
+  }, [router]);
 
-    return () => observer.disconnect();
-  }, [isScrolling]); // Add isScrolling to the dependency array
-
-  const handleGetDetails = () => {
-    if (foodDetailsRef.current) {
-      const elementPosition =
-        foodDetailsRef.current.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - 100;
-
-      setIsVisible(false);
-      setIsScrolling(true); // Set scrolling state to true
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-
-      // Use requestAnimationFrame for smoother and more accurate timing
-      let animationStartTime;
-      const scrollDuration = 1000; // Adjust scroll duration (milliseconds)
-      const animateScroll = (currentTime) => {
-        if (!animationStartTime) {
-          animationStartTime = currentTime;
-        }
-        const timeElapsed = currentTime - animationStartTime;
-        const scrollProgress = Math.min(timeElapsed / scrollDuration, 1); // Clamp to 0-1
-
-        window.scrollTo({
-          top: offsetPosition * scrollProgress, // Use progress for smooth animation
-          behavior: "instant", // Important: use instant behavior here
-        });
-
-        if (scrollProgress < 1) {
-          requestAnimationFrame(animateScroll);
-        } else {
-          setIsScrolling(false); // Reset scrolling state when animation finishes
-          setIsVisible(true); //Show content once scrolled
-        }
-      };
-
-      requestAnimationFrame(animateScroll);
-    }
+  const handleLoginSuccess = (token) => {
+    Cookies.set("token", token, { expires: 7 });
+    router.replace("/dashboard");
   };
 
-  return (
-    <>
-      <Hero onGetDetails={handleGetDetails} />
-      <div
-        ref={foodDetailsRef}
-        className={`transform transition-all duration-700 ease-out ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
-      >
-        <FoodDetails />
+  const handleNewUser = (phone) => {
+    setPageState((prev) => ({
+      ...prev,
+      phoneNumber: phone,
+      showWelcome: true,
+    }));
+  };
+
+  // Show loader while checking for token
+  if (pageState.isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
       </div>
-    </>
+    );
+  }
+
+  return (
+    <div className="w-full min-h-screen my-5 flex flex-col items-center justify-center text-center px-4">
+      <div className="w-full">
+        {!pageState.showWelcome ? (
+          <LoginForm onSuccess={handleLoginSuccess} onNewUser={handleNewUser} />
+        ) : (
+          <WelcomeForm
+            phoneNumber={pageState.phoneNumber}
+            onSuccess={handleLoginSuccess}
+          />
+        )}
+      </div>
+    </div>
   );
 }

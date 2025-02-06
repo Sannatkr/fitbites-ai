@@ -23,9 +23,9 @@ const ThemeSwitcher = () => {
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
     >
       {!isDark ? (
-        <Moon className="w-5 h-5 text-gray-600 animate-rotate-up" />
+        <Moon className="w-6 h-6 text-gray-600 animate-rotate-up" />
       ) : (
-        <Sun className="w-5 h-5 text-yellow-500 animate-rotate-up" />
+        <Sun className="w-6 h-6 text-yellow-500 animate-rotate-up" />
       )}
     </button>
   );
