@@ -15,7 +15,7 @@ export async function GET(request) {
     }
     // console.log("Token is: ", token);
     // Verify token and get userId
-    const decoded = verify(token, process.env.JWT_SECRET);
+    const decoded = verify(token, process.env.NEXT_APP_JWT_SECRET);
     const userId = decoded.userId;
     // console.log("name: ", userId);
 

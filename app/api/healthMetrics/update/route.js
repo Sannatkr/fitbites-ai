@@ -13,7 +13,7 @@ export async function PUT(request) {
     }
 
     // Verify token and get userId
-    const decoded = verify(token, process.env.JWT_SECRET);
+    const decoded = verify(token, process.env.NEXT_APP_JWT_SECRET);
     const userId = decoded.userId;
 
     // Get form data and connect to DB

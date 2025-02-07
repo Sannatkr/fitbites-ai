@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { dbConnect, User } from "@/app/lib/mongodb";
 import { SignJWT } from "jose";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.NEXT_APP_JWT_SECRET;
 
 export async function POST(request) {
   if (!JWT_SECRET) {

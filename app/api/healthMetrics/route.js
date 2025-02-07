@@ -8,7 +8,7 @@ import {
 } from "@/utils/metricCalculations";
 import { calculateMacros } from "@/utils/macros";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.NEXT_APP_JWT_SECRET;
 
 export async function POST(request) {
   if (!JWT_SECRET) {

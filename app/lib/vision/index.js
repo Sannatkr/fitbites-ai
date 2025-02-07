@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.NEXT_APP_OPENAI_KEY,
 });
 
 export async function analyzeFood(base64Image) {
