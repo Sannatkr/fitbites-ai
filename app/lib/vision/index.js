@@ -11,10 +11,17 @@ export async function analyzeFood(base64Image) {
       ""
     );
 
+    const maxSizeInBytes = 20971520;
+    console.log("size", base64Data.length);
+    // if (base64Data.length * 0.75 > maxSizeInBytes) {
+    //   throw new Error("Image size too large");
+    // }
+
     // const newLocal = "json";
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       // response_format: { typnewLocalon" }, // ✅ Correct
+      timeout: 30000, // 30 second timeout for this specific request
       max_tokens: 1024,
       messages: [
         {
@@ -107,6 +114,7 @@ export async function analyzeMealSummary(summary) {
     const response = await openai.chat.completions.create({
       model: "gpt-4",
       max_tokens: 1024,
+      timeout: 30000, // 30 second timeout for this specific request
       messages: [
         {
           role: "user",
