@@ -16,6 +16,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@react-three/drei": "^9.92.7",
     "@react-three/fiber": "^8.15.12",
+    "@shadcn/ui": "^0.0.4",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
@@ -38,6 +39,7 @@
     "react-dropzone": "^14.3.5",
     "react-hot-toast": "^2.5.1",
     "recharts": "^2.15.0",
+    "shadcn-ui": "^0.9.4",
     "sharp": "^0.33.5",
     "tailwind-merge": "^2.6.0",
     "three": "^0.160.0"

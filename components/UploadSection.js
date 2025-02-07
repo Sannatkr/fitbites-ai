@@ -97,151 +97,135 @@ const UploadSection = ({ getRootProps, getInputProps, onImageCapture }) => {
     setShowCamera(false);
   };
 
+  // Keep all the imports and component logic the same, just update the JSX/styling
   return (
     <div className="w-full max-w-2xl mx-auto">
-      {/* Enhanced Carousel */}
-      <div className="mb-10 relative group">
+      {/* Enhanced Carousel with minimal styling */}
+      <div className="mb-8 relative">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentTip}
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -10 }} // Reduced movement distance
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.4 }}
-            className="relative bg-gradient-to-br from-blue-50/20 to-purple-50/10 dark:from-blue-900/20 dark:to-purple-900/10 backdrop-blur-lg rounded-2xl p-6 border border-white/10 dark:border-gray-700/50"
+            exit={{ opacity: 0, x: 10 }}
+            transition={{
+              duration: 0.3, // Slightly faster transition
+              ease: "easeOut", // Changed to easeOut for smoother feel
+            }}
+            className="relative bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl p-6"
           >
-            {/* Decorative Gradient Line */}
-            <div className="absolute left-16 top-1/2 -translate-y-1/2 h-3/5 w-1 bg-gradient-to-b from-blue-400 to-purple-400 rounded-full" />
-
-            <div className="flex items-center gap-6 pl-8">
-              {/* Animated Emoji Container */}
+            <div className="flex items-center gap-6">
               <motion.div
-                className="text-5xl min-w-[80px] flex justify-center items-end"
-                animate={{ y: [0, -5, 0], rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
+                className="text-4xl min-w-[60px] flex justify-center"
+                animate={{ y: [-2, 2] }} // Simplified animation
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                }}
               >
                 {uploadTips[currentTip].icon}
               </motion.div>
 
-              {/* Text Content */}
-              <div className="relative overflow-hidden">
-                <motion.p
-                  className="text-2xl font-medium bg-gradient-to-r from-blue-600 to-purple-500 dark:from-blue-300 dark:to-purple-300 bg-clip-text text-transparent"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <span className="text-white/50 dark:text-gray-500 mr-2">
-                    //
-                  </span>
-                  {uploadTips[currentTip].text}
-                </motion.p>
-              </div>
+              <motion.p
+                className="text-lg sm:text-xl font-medium text-gray-700 dark:text-gray-200"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 0.2, // Faster text fade
+                  delay: 0.1, // Reduced delay
+                }}
+              >
+                <span className="text-blue-500 dark:text-blue-400 mr-2">
+                  //
+                </span>
+                {uploadTips[currentTip].text}
+              </motion.p>
             </div>
           </motion.div>
         </AnimatePresence>
 
-        {/* Modern Pagination Dots */}
-        <div className="flex justify-center gap-2 mt-6">
+        {/* Minimal Pagination Dots */}
+        <div className="flex justify-center gap-2 mt-4">
           {uploadTips.map((_, index) => (
             <motion.button
               key={index}
               onClick={() => setCurrentTip(index)}
               whileHover={{ scale: 1.2 }}
-              className={`relative h-3 w-3 rounded-full transition-all ${
+              className={`h-2 w-2 rounded-full transition-all ${
                 currentTip === index
-                  ? "bg-gradient-to-br from-blue-400 to-purple-400 shadow-glow"
-                  : "bg-gray-300/50 dark:bg-gray-600/50 hover:bg-gray-400"
+                  ? "bg-blue-500 dark:bg-blue-400"
+                  : "bg-gray-300 dark:bg-gray-600"
               }`}
-            >
-              {currentTip === index && (
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-white/20"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring" }}
-                />
-              )}
-            </motion.button>
+            />
           ))}
         </div>
       </div>
 
-      {/* Premium Action Buttons */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {/* Action Buttons with minimal styling */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <motion.div
-          whileHover={{ y: -5 }}
+          whileHover={{ y: -2 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
           <button
             {...getRootProps()}
-            className="w-full h-full bg-gradient-to-br from-blue-600/90 to-purple-600/90 rounded-2xl p-8 backdrop-blur-lg border border-white/20 shadow-2xl hover:shadow-blue-purple-glow transition-all duration-300 group"
+            className="w-full h-full bg-blue-500 dark:bg-blue-600 rounded-xl p-6 text-white hover:bg-blue-600 dark:hover:bg-blue-700 transition-all duration-300"
           >
             <input {...getInputProps()} />
-            <div className="flex flex-col items-center gap-4 text-white">
+            <div className="flex flex-col items-center gap-3">
               <motion.div
-                animate={{ y: [0, -5, 0] }}
+                animate={{ y: [0, -3, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <ImagePlus
-                  size={40}
-                  className="opacity-90 group-hover:opacity-100"
-                />
+                <ImagePlus size={32} className="opacity-90" />
               </motion.div>
-              <div className="space-y-2">
-                <h3 className="text-2xl font-bold tracking-tight">
-                  Upload Photo
-                </h3>
-                <p className="text-sm opacity-90 font-light">
-                  From your gallery
-                </p>
+              <div>
+                <h3 className="text-lg font-medium">Upload Photo</h3>
+                <p className="text-sm text-white/80">From your gallery</p>
               </div>
             </div>
           </button>
         </motion.div>
 
         <motion.button
-          onClick={(e) => {
-            e.preventDefault();
-            setShowCamera(true);
-          }}
-          whileHover={{ y: -5 }}
-          className="w-full bg-gradient-to-br from-emerald-600/90 to-cyan-600/90 rounded-2xl p-8 backdrop-blur-lg border border-white/20 shadow-2xl hover:shadow-emerald-cyan-glow transition-all duration-300 group"
+          onClick={handleCameraClick}
+          whileHover={{ y: -2 }}
+          className="w-full bg-emerald-500 dark:bg-emerald-600 rounded-xl p-6 text-white hover:bg-emerald-600 dark:hover:bg-emerald-700 transition-all duration-300"
         >
-          <div className="flex flex-col items-center gap-4 text-white">
+          <div className="flex flex-col items-center gap-3">
             <motion.div
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              <Camera
-                size={40}
-                className="opacity-90 group-hover:opacity-100"
-              />
+              <Camera size={32} className="opacity-90" />
             </motion.div>
-            <div className="space-y-2">
-              <h3 className="text-2xl font-bold tracking-tight">Take Photo</h3>
-              <p className="text-sm opacity-90 font-light">Use your camera</p>
+            <div>
+              <h3 className="text-lg font-medium">Take Photo</h3>
+              <p className="text-sm text-white/80">Use your camera</p>
             </div>
           </div>
         </motion.button>
       </div>
 
-      {/* Premium Camera Modal */}
+      {/* Camera Modal with minimal styling and larger view */}
       {showCamera && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/90 backdrop-blur-3xl z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black z-50 flex flex-col md:items-center md:justify-center"
           onClick={() => setShowCamera(false)}
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="relative bg-gray-900/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 w-full max-w-2xl shadow-2xl"
+            className="relative w-full md:w-[90%] lg:w-[80%] h-screen md:h-[85vh] md:max-h-[800px] md:rounded-2xl overflow-hidden bg-black"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative aspect-video mb-6 bg-gray-800 rounded-xl overflow-hidden border border-white/10">
+            {/* Video Container */}
+            <div className="relative w-full h-full">
               <video
                 ref={videoRef}
                 autoPlay
@@ -249,25 +233,45 @@ const UploadSection = ({ getRootProps, getInputProps, onImageCapture }) => {
                 muted
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_60%,_rgba(0,0,0,0.6))]" />
-            </div>
 
-            <div className="flex flex-col items-center gap-6">
-              <Button
-                onClick={capturePhoto}
-                className="h-16 w-16 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-lg relative"
-              >
-                <div className="absolute inset-0 animate-pulse-border rounded-full" />
-                <div className="h-12 w-12 rounded-full bg-red-500/90 hover:bg-red-400 transition-all" />
-              </Button>
+              {/* Controls Overlay */}
+              <div className="absolute bottom-0 inset-x-0 pb-10 md:pb-6 flex flex-col items-center gap-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-20">
+                {/* Capture Button */}
+                <motion.button
+                  onClick={capturePhoto}
+                  className="group relative"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {/* Outer ring with pulse effect */}
+                  <div className="absolute inset-0 rounded-full bg-white/20 blur-md animate-pulse" />
 
-              <Button
-                variant="ghost"
-                onClick={() => setShowCamera(false)}
-                className="text-white/80 hover:text-white px-6 py-3 hover:bg-white/10 rounded-xl transition-all"
-              >
-                Cancel
-              </Button>
+                  {/* Main button ring */}
+                  <div className="relative h-16 w-16 rounded-full border-4 border-white/80 flex items-center justify-center">
+                    {/* Inner circle */}
+                    <div
+                      className="h-12 w-12 rounded-full bg-white/90 group-hover:bg-white 
+                               transition-all duration-200 flex items-center justify-center"
+                    >
+                      <div
+                        className="h-11 w-11 rounded-full bg-red-500 group-hover:bg-red-600 
+                                 transition-colors duration-200"
+                      />
+                    </div>
+                  </div>
+                </motion.button>
+
+                {/* Cancel Button */}
+                <motion.button
+                  onClick={() => setShowCamera(false)}
+                  className="px-6 py-2.5 text-white/90 hover:text-white text-sm font-medium
+                         bg-white/10 hover:bg-white/20 rounded-lg transition-all duration-200"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Cancel
+                </motion.button>
+              </div>
             </div>
           </motion.div>
         </motion.div>

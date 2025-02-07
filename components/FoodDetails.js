@@ -66,11 +66,19 @@ export default function FoodDetails({ nutritionData, foodImage }) {
 
           if (!response.ok || data.error) {
             toast.error("Failed to analyze meal", {
-              duration: 3000,
+              duration: 4000,
               style: {
-                border: "1px solid #ff4b4b",
+                border: "1px solid #EF4444", // Error red border
                 padding: "16px",
-                color: "#ff4b4b",
+                color: "#EF4444", // Error red text
+                backgroundColor: "#FEF2F2", // Light red background
+                borderRadius: "8px",
+                fontSize: "15px",
+                fontWeight: "500",
+              },
+              iconTheme: {
+                primary: "#EF4444", // Error red icon
+                secondary: "#FFFFFF", // White background for icon
               },
             });
             return;
@@ -103,180 +111,126 @@ export default function FoodDetails({ nutritionData, foodImage }) {
   }
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 pt-10">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row gap-x-8 items-start">
-        {/* Table Container */}
+    <section className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="container mx-auto px-4 py-6 flex flex-col lg:flex-row gap-6">
+        {/* Nutrition Facts Table */}
         <motion.div
-          className="bg-white/80 dark:bg-gray-800/90 rounded-2xl shadow-xl backdrop-blur-sm overflow-hidden flex-grow md:w-3/5"
+          className="bg-gray-50/95 dark:bg-gray-800/95 rounded-2xl shadow-2xl backdrop-blur-sm w-full lg:w-3/5"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <motion.h2
-            className="text-4xl font-bold text-blue-600 dark:text-blue-300 my-8 text-center"
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", bounce: 0.5 }}
-          >
-            Nutrition Facts
-          </motion.h2>
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gradient-to-r from-blue-400 to-purple-400 dark:from-gray-500 dark:to-gray-700 dark:text-white text-black">
-                <th className="px-8 py-4 text-left text-2xl font-extrabold tracking-wider">
-                  Nutrient
-                </th>
-                <th className="px-8 py-4 text-left text-2xl font-bold tracking-wider">
-                  Amount
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className="p-6">
+            <motion.h2
+              className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center"
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", bounce: 0.5 }}
+            >
+              Nutrition Facts
+            </motion.h2>
+
+            <div className="flex flex-col space-y-2">
               {formattedNutritionData.map((item, index) => (
-                <motion.tr
+                <motion.div
                   key={item.category}
-                  className={`group hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer transition-transform ${
-                    item.value.length > 15 ? "min-h-[80px]" : "min-h-[60px]"
-                  }`}
+                  className="flex items-start justify-between py-3 px-4 
+                         hover:bg-gray-100/80 dark:hover:bg-gray-700/30 
+                         rounded-lg transition-all"
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.2 }}
-                  whileHover={{ scale: 1.01 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  <td className="px-8 py-5 text-lg font-bold text-blue-800 dark:text-blue-100 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-300">
-                    {item.category.toUpperCase()}
-                  </td>
-                  <td
-                    className="px-8 py-5 text-lg font-semibold text-black dark:text-white transition-colors group-hover:text-blue-500 dark:group-hover:text-blue-200"
-                    style={{
-                      color: `hsl(${(index * 40) % 360}, 70%, 50%)`,
-                    }}
-                  >
-                    {item.value}
-                  </td>
-                </motion.tr>
+                  <div className="text-base sm:text-lg font-bold text-gray-500 dark:text-gray-400 uppercase">
+                    {item.category}
+                  </div>
+
+                  <div className="pl-6 text-right">
+                    <span className="text-sm sm:text-lg font-semibold text-gray-800 dark:text-gray-200">
+                      {item.value}
+                    </span>
+                  </div>
+                </motion.div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </motion.div>
 
         {/* Right Column */}
-        <motion.div
-          className="w-full md:w-2/5 bg-white/80 dark:bg-gray-800/90 rounded-2xl shadow-xl backdrop-blur-sm p-6 space-y-6"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-300">
-            Meal Overview
-          </h3>
-
-          {foodImage && (
-            <motion.div
-              className="relative w-full h-64 rounded-xl overflow-hidden shadow-lg"
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.4 }}
-            >
-              <Image
-                src={foodImage}
-                alt="Analyzed meal"
-                layout="fill"
-                objectFit="contain"
-                className="rounded-xl bg-gray-50 dark:bg-gray-700 p-2"
-              />
-            </motion.div>
-          )}
-
-          {/* Macros Grid */}
-          <div className="grid grid-cols-3 gap-4">
-            <motion.div
-              className="p-4 rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600"
-              whileHover={{ scale: 1.02 }}
-            >
-              <div className="text-4xl mb-2 grayscale dark:brightness-150">
-                🍞
-              </div>
-              <div className="font-bold text-black dark:text-gray-200 font-mono">
-                Carbs
-              </div>
-              <div className="text-xl font-black text-gray-800 dark:text-gray-100">
-                {macros.carbs}
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="p-4 rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600"
-              whileHover={{ scale: 1.02 }}
-            >
-              <div className="text-4xl mb-2 grayscale dark:brightness-150">
-                💪
-              </div>
-              <div className="font-bold text-black dark:text-gray-200 font-mono">
-                Protein
-              </div>
-              <div className="text-xl font-black text-gray-800 dark:text-gray-100">
-                {macros.protein}
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="p-4 rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600"
-              whileHover={{ scale: 1.02 }}
-            >
-              <div className="text-4xl mb-2 grayscale dark:brightness-150">
-                🔥
-              </div>
-              <div className="font-bold text-black dark:text-gray-200 font-mono">
-                Calories
-              </div>
-              <div className="text-xl font-black text-gray-800 dark:text-gray-100">
-                {macros.calories}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Analysis Section */}
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-300">
-              Nutritional Analysis
+        <div className="w-full lg:w-2/5 flex flex-col gap-6">
+          {/* Single Card Container for Overview and Analysis */}
+          <motion.div
+            className="bg-gray-50/95 dark:bg-gray-800/95 rounded-2xl shadow-2xl p-6"
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+              Meal Analysis
             </h3>
 
-            {isLoading ? (
-              <div className="space-y-3">
-                {[...Array(4)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-full"
-                  ></div>
-                ))}
-              </div>
-            ) : mealAnalysis ? (
+            {foodImage && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="space-y-4"
+                className="relative w-full h-48 sm:h-56 rounded-xl overflow-hidden mb-6"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.4 }}
               >
+                <Image
+                  src={foodImage}
+                  alt="Analyzed meal"
+                  layout="fill"
+                  objectFit="contain"
+                  className="rounded-xl bg-gray-100 dark:bg-gray-700/50"
+                />
+              </motion.div>
+            )}
+
+            {/* Macros Grid */}
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              {[
+                { label: "Carbs", value: macros.carbs, icon: "🍞" },
+                { label: "Protein", value: macros.protein, icon: "💪" },
+                { label: "Calories", value: macros.calories, icon: "🔥" },
+              ].map((macro) => (
+                <motion.div
+                  key={macro.label}
+                  className="p-2.5 sm:p-4 rounded-xl bg-white dark:bg-gray-700/50 
+                         border border-gray-100 dark:border-gray-600"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="text-lg sm:text-2xl mb-1 grayscale">
+                    {macro.icon}
+                  </div>
+                  <div className="text-[11px] sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+                    {macro.label}
+                  </div>
+                  <div className="text-xs sm:text-lg font-bold text-gray-800 dark:text-gray-200">
+                    {macro.value}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Analysis Points */}
+            {mealAnalysis && (
+              <div className="space-y-3">
                 {mealAnalysis.map((point, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-gray-700 dark:text-gray-300"
+                    className="p-2 bg-white dark:bg-gray-700/50 rounded-lg
+                           text-gray-700 dark:text-gray-300 text-sm sm:text-lg font-medium"
                   >
                     {point}
                   </motion.div>
                 ))}
-              </motion.div>
-            ) : (
-              <p className="text-gray-500 dark:text-gray-400">
-                No analysis available
-              </p>
+              </div>
             )}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

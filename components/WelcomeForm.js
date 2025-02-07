@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { User, Scale, Ruler, Activity } from "lucide-react";
+import { User, Scale, Ruler, Activity, Calendar } from "lucide-react";
 
-export default function WelcomeForm({ phoneNumber, onSuccess }) {
+const WelcomeForm = ({ phoneNumber, onSuccess }) => {
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
@@ -52,26 +52,26 @@ export default function WelcomeForm({ phoneNumber, onSuccess }) {
   return (
     <div className="w-full max-w-3xl mx-auto mt-10 p-8">
       <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-12 shadow-2xl">
-        <div className="mb-12 text-center relative overflow-hidden">
+        <div className="mb-12 text-center">
           <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 bg-clip-text text-transparent animate-gradient">
             Personalize Your Journey
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 font-light tracking-wide">
+          <p className="text-xl text-gray-600 dark:text-gray-300 font-light">
             Let's craft the perfect health plan for you!
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/** Name Input */}
+          {/* Name Input */}
           <div className="relative group">
             <div
-              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 group-hover:opacity-100 ${
+              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 ${
                 focusedInput === "name" ? "opacity-100" : "opacity-0"
               }`}
             />
             <div className="relative bg-white dark:bg-gray-800 rounded-2xl">
               <div className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-900 rounded-2xl px-6 py-5">
-                <User className="w-6 h-6 text-gray-400" />
+                <User className="w-6 h-6 text-gray-400 dark:text-gray-300" />
                 <input
                   type="text"
                   name="name"
@@ -87,16 +87,16 @@ export default function WelcomeForm({ phoneNumber, onSuccess }) {
             </div>
           </div>
 
-          {/** Gender Input */}
+          {/* Gender Input */}
           <div className="relative group">
             <div
-              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 group-hover:opacity-100 ${
+              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 ${
                 focusedInput === "gender" ? "opacity-100" : "opacity-0"
               }`}
             />
             <div className="relative bg-white dark:bg-gray-800 rounded-2xl">
               <div className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-900 rounded-2xl px-6 py-5">
-                <User className="w-6 h-6 text-gray-400" />
+                <User className="w-6 h-6 text-gray-400 dark:text-gray-300" />
                 <select
                   name="gender"
                   value={formData.gender}
@@ -115,15 +115,16 @@ export default function WelcomeForm({ phoneNumber, onSuccess }) {
             </div>
           </div>
 
+          {/* Age Input */}
           <div className="relative group">
             <div
-              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 group-hover:opacity-100 ${
-                focusedInput === "weight" ? "opacity-100" : "opacity-0"
+              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 ${
+                focusedInput === "age" ? "opacity-100" : "opacity-0"
               }`}
             />
             <div className="relative bg-white dark:bg-gray-800 rounded-2xl">
               <div className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-900 rounded-2xl px-6 py-5">
-                <Scale className="w-6 h-6 text-gray-400" />
+                <Calendar className="w-6 h-6 text-gray-400 dark:text-gray-300" />
                 <input
                   type="number"
                   name="age"
@@ -139,16 +140,16 @@ export default function WelcomeForm({ phoneNumber, onSuccess }) {
             </div>
           </div>
 
-          {/** Weight Input */}
+          {/* Weight Input */}
           <div className="relative group">
             <div
-              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 group-hover:opacity-100 ${
+              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 ${
                 focusedInput === "weight" ? "opacity-100" : "opacity-0"
               }`}
             />
             <div className="relative bg-white dark:bg-gray-800 rounded-2xl">
               <div className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-900 rounded-2xl px-6 py-5">
-                <Scale className="w-6 h-6 text-gray-400" />
+                <Scale className="w-6 h-6 text-gray-400 dark:text-gray-300" />
                 <input
                   type="number"
                   name="weight"
@@ -164,25 +165,23 @@ export default function WelcomeForm({ phoneNumber, onSuccess }) {
             </div>
           </div>
 
-          {/** Height Inputs */}
+          {/* Height Inputs */}
           <div className="flex gap-4">
             {["heightFt", "heightIn"].map((heightType) => (
               <div className="relative group flex-1" key={heightType}>
                 <div
-                  className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 group-hover:opacity-100 ${
+                  className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 ${
                     focusedInput === heightType ? "opacity-100" : "opacity-0"
                   }`}
                 />
                 <div className="relative bg-white dark:bg-gray-800 rounded-2xl">
                   <div className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-900 rounded-2xl px-6 py-5">
-                    <Ruler className="w-6 h-6 text-gray-400" />
+                    <Ruler className="w-6 h-6 text-gray-400 dark:text-gray-300" />
                     <input
                       type="number"
                       name={heightType}
                       placeholder={
-                        heightType === "heightFt"
-                          ? "Height (ft)"
-                          : "Height (in)"
+                        heightType === "heighFt" ? "Height (ft)" : "Height (in)"
                       }
                       value={formData[heightType]}
                       onChange={handleChange}
@@ -197,23 +196,23 @@ export default function WelcomeForm({ phoneNumber, onSuccess }) {
             ))}
           </div>
 
-          {/** Activity Level Input */}
+          {/* Activity Level Input */}
           <div className="relative group">
             <div
-              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 group-hover:opacity-100 ${
+              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 ${
                 focusedInput === "activityLevel" ? "opacity-100" : "opacity-0"
               }`}
             />
             <div className="relative bg-white dark:bg-gray-800 rounded-2xl">
               <div className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-900 rounded-2xl px-6 py-5">
-                <Activity className="w-6 h-6 text-gray-400" />
+                <Activity className="w-6 h-6 text-gray-400 dark:text-gray-300" />
                 <select
                   name="activityLevel"
                   value={formData.activityLevel}
                   onChange={handleChange}
                   onFocus={() => setFocusedInput("activityLevel")}
                   onBlur={() => setFocusedInput("")}
-                  className="block w-full outline-none bg-transparent text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
+                  className="block w-full outline-none bg-transparent text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0 font-emoji"
                   required
                 >
                   <option value="">Select Activity Level</option>
@@ -234,17 +233,17 @@ export default function WelcomeForm({ phoneNumber, onSuccess }) {
             </div>
           )}
 
-          {/** Submit Button */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="relative w-full group overflow-hidden rounded-xl text-lg font-medium transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="relative w-full group overflow-hidden rounded-xl text-lg font-medium transition-all duration-300 hover:scale-105 active:scale-95"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 group-hover:opacity-90 transition-opacity" />
             <div className="relative flex items-center justify-center backdrop-blur-sm px-6 py-4 text-white">
-              {loading ? (
-                <div className="animate-spin w-6 h-6 border-2 border-white border-t-transparent rounded-full mr-3"></div>
-              ) : null}
+              {loading && (
+                <div className="animate-spin w-6 h-6 border-2 border-white border-t-transparent rounded-full mr-3" />
+              )}
               <span>
                 {loading ? "Submitting..." : "Continue to FitBites AI"}
               </span>
@@ -254,4 +253,6 @@ export default function WelcomeForm({ phoneNumber, onSuccess }) {
       </div>
     </div>
   );
-}
+};
+
+export default WelcomeForm;

@@ -19,11 +19,11 @@ const ThemeSwitcher = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 animate-in"
+      className="p-2 rounded-lg  transition-all duration-300 animate-in"
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
     >
       {!isDark ? (
-        <Moon className="w-6 h-6 text-gray-600 animate-rotate-up" />
+        <Moon className="w-6 h-6 text-gray-300 animate-rotate-up" />
       ) : (
         <Sun className="w-6 h-6 text-yellow-500 animate-rotate-up" />
       )}
