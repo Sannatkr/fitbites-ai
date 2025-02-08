@@ -1,6 +1,8 @@
 import { analyzeFood } from "@/app/lib/vision";
 import sharp from "sharp";
 
+export const maxDuration = 60; // Set maximum duration to 60 seconds
+
 const convertToPngBase64 = async (buffer) => {
   try {
     const pngBuffer = await sharp(buffer).png({ quality: 80 }).toBuffer();

@@ -18,6 +18,7 @@ export async function analyzeFood(base64Image) {
     // }
 
     // const newLocal = "json";
+    console.log("started");
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       // response_format: { typnewLocalon" }, // ✅ Correct
@@ -88,6 +89,7 @@ export async function analyzeFood(base64Image) {
         },
       ],
     });
+    console.log("ended");
 
     const rawContent = response.choices[0].message.content;
     console.log(rawContent);
