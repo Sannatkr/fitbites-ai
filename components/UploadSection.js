@@ -35,6 +35,7 @@ const UploadSection = ({
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const [isFrontCamera, setIsFrontCamera] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -87,11 +88,17 @@ const UploadSection = ({
     try {
       const constraints = {
         video: {
-          facingMode: "user", // This will use the front camera
+          facingMode: isFrontCamera ? "user" : "environment",
           width: { ideal: 1280 },
           height: { ideal: 720 },
         },
       };
+
+      // Stop any existing tracks before requesting new ones
+      if (streamRef.current) {
+        const tracks = streamRef.current.getTracks();
+        tracks.forEach((track) => track.stop());
+      }
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
@@ -99,7 +106,6 @@ const UploadSection = ({
         videoRef.current.srcObject = stream;
         streamRef.current = stream;
 
-        // Add event listener for when video is ready
         videoRef.current.onloadedmetadata = () => {
           videoRef.current.play();
           setIsCameraReady(true);
@@ -110,6 +116,12 @@ const UploadSection = ({
       toast.error("Could not access camera");
       setShowCamera(false);
     }
+  };
+
+  const switchCamera = async () => {
+    setIsCameraReady(false);
+    setIsFrontCamera((prev) => !prev);
+    await startCamera();
   };
 
   const stopCamera = () => {
@@ -128,8 +140,9 @@ const UploadSection = ({
 
   // Create a handleClose function for the cancel button
   const handleClose = () => {
-    stopCamera(); // First stop the camera
-    setShowCamera(false); // Then close the modal
+    stopCamera();
+    setShowCamera(false);
+    setIsFrontCamera(false); // Reset to back camera when closing
   };
 
   const handleCameraClick = (e) => {
@@ -333,20 +346,41 @@ const UploadSection = ({
               {/* Controls Overlay */}
               <div className="absolute bottom-0 inset-x-0 pb-10 md:pb-6 flex flex-col items-center gap-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-20">
                 {isCameraReady && (
-                  <motion.button
-                    onClick={capturePhoto}
-                    className="group relative"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {/* Outer ring with pulse effect */}
-                    <div className="absolute inset-0 rounded-full bg-white/20 blur-md animate-pulse" />
-                    <div className="relative h-16 w-16 rounded-full border-4 border-white/80 flex items-center justify-center">
-                      <div className="h-12 w-12 rounded-full bg-white/90 group-hover:bg-white transition-all duration-200 flex items-center justify-center">
-                        <div className="h-11 w-11 rounded-full bg-red-500 group-hover:bg-red-600 transition-colors duration-200" />
+                  <>
+                    <motion.button
+                      onClick={capturePhoto}
+                      className="group relative"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {/* Outer ring with pulse effect */}
+                      <div className="absolute inset-0 rounded-full bg-white/20 blur-md animate-pulse" />
+                      <div className="relative h-16 w-16 rounded-full border-4 border-white/80 flex items-center justify-center">
+                        <div className="h-12 w-12 rounded-full bg-white/90 group-hover:bg-white transition-all duration-200 flex items-center justify-center">
+                          <div className="h-11 w-11 rounded-full bg-red-500 group-hover:bg-red-600 transition-colors duration-200" />
+                        </div>
                       </div>
-                    </div>
-                  </motion.button>
+                    </motion.button>
+                    <motion.button
+                      onClick={switchCamera}
+                      className="absolute top-4 right-4 p-3 rounded-full bg-black/50 hover:bg-black/70 
+                 border border-white/20 transition-all duration-200"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 h-6 text-white"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M20 4v5h-.582m0-5h-9.924m0 0h-.494A5.008 5.008 0 0 0 4 9.293" />
+                        <path d="M4 20v-5h.582m0 5h9.924m0 0h.494A5.008 5.008 0 0 0 20 14.707" />
+                      </svg>
+                    </motion.button>
+                  </>
                 )}
 
                 <motion.button
