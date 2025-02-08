@@ -48,7 +48,7 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full min-h-screen my-5 flex flex-col items-center justify-center text-center px-4">
+    <div className="w-full min-h-screen my-5 flex flex-col items-center justify-center text-center px-1">
       <div className="w-full">
         {!pageState.showWelcome ? (
           <LoginForm onSuccess={handleLoginSuccess} onNewUser={handleNewUser} />

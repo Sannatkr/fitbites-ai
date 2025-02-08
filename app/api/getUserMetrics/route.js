@@ -35,7 +35,7 @@ export async function GET(request) {
         height: metrics.height,
         age: metrics.age,
         bmi: parseFloat(metrics.bmi),
-        dailyCalories: metrics.caloriesIntake,
+        caloriesIntake: metrics.caloriesIntake,
         gender: metrics.gender,
         targetWeight: metrics.targetWeight,
         macros: metrics.macros,

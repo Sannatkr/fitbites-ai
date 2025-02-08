@@ -14,7 +14,7 @@ const defaultUserData = {
   weight: 0,
   height: "",
   bmi: 0,
-  dailyCalories: 0,
+  caloriesIntake: 0,
   gender: "",
   activityLevel: "",
   targetWeight: 0,
@@ -201,6 +201,8 @@ const HeroSection = () => {
         ...updatedMetrics,
         macros,
       }));
+
+      console.log("User Data is: ", userData);
 
       toast.success("Metrics updated successfully!", {
         duration: 4000,
@@ -603,7 +605,7 @@ const HeroSection = () => {
               weight={userData.weight}
               height={userData.height}
               bmi={userData.bmi}
-              dailyCalories={userData.dailyCalories}
+              dailyCalories={userData.caloriesIntake}
               age={userData.age}
               activityLevel={userData.activityLevel}
               macros={userData.macros}

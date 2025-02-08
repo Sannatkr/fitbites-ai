@@ -35,36 +35,34 @@ export default function LoginForm({ onSuccess, onNewUser }) {
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto p-8">
-      <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-12 shadow-2xl">
-        <div className="mb-12 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-blue-400/20 rounded-full blur-2xl animate-pulse" />
+    <div className="w-full max-w-lg mx-auto p-4 sm:p-8">
+      <div className="bg-white/10 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-12 shadow-2xl">
+        <div className="mb-8 sm:mb-12 text-center relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-20 sm:h-24 bg-blue-400/20 rounded-full blur-2xl animate-pulse" />
           <div className="relative">
-            <div className="flex items-center justify-center mb-4 gap-3">
-              {/* <Salad className="w-8 h-8 text-green-400 animate-bounce" /> */}
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 bg-clip-text text-transparent animate-gradient">
+            <div className="flex items-center justify-center mb-4 gap-2 sm:gap-3">
+              <h1 className="text-xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 bg-clip-text text-transparent animate-gradient">
                 Welcome to FitBites AI
               </h1>
-              {/* <Salad className="w-8 h-8 text-green-400 animate-bounce" /> */}
             </div>
-            <p className="text-xl text-gray-600 dark:text-gray-300 font-light tracking-wide">
+            <p className="text-[12px] sm:text-xl text-gray-600 dark:text-gray-300 font-light tracking-wide">
               Your personal nutrition assistant
             </p>
             <div className="absolute w-full h-1 bottom-0 left-0 bg-gradient-to-r from-transparent via-blue-400 to-transparent animate-slide" />
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
           <div className="relative group">
             <div
-              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-2xl blur transition-all duration-500 group-hover:opacity-100 ${
+              className={`absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-xl sm:rounded-2xl blur transition-all duration-500 group-hover:opacity-100 ${
                 isFocused ? "opacity-100" : "opacity-0"
               }`}
             />
 
-            <div className="relative bg-white dark:bg-gray-800 rounded-2xl">
-              <div className="flex items-center space-x-4 bg-gray-50 dark:bg-gray-900 rounded-2xl px-6 py-5">
-                <Phone className="w-6 h-6 text-gray-400" />
+            <div className="relative bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl">
+              <div className="flex items-center space-x-2 sm:space-x-4 bg-gray-50 dark:bg-gray-900 rounded-xl sm:rounded-2xl px-4 sm:px-6 py-4 sm:py-5">
+                <Phone className="w-4 h-4 sm:w-6 sm:h-6 text-gray-400" />
                 <input
                   type="tel"
                   value={phoneNumber}
@@ -72,7 +70,7 @@ export default function LoginForm({ onSuccess, onNewUser }) {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   placeholder="Enter your phone number"
-                  className="block w-full outline-none bg-transparent text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
+                  className="block w-full outline-none bg-transparent text-[11px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
                   required
                 />
               </div>
@@ -80,7 +78,7 @@ export default function LoginForm({ onSuccess, onNewUser }) {
           </div>
 
           {error && (
-            <div className="text-red-500 text-sm bg-red-100/10 rounded-xl p-4 flex items-center space-x-2">
+            <div className="text-red-500 text-sm bg-red-100/10 rounded-xl p-3 sm:p-4 flex items-center space-x-2">
               <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
               <span>{error}</span>
             </div>
@@ -89,12 +87,12 @@ export default function LoginForm({ onSuccess, onNewUser }) {
           <button
             type="submit"
             disabled={loading}
-            className="relative w-full group overflow-hidden rounded-xl text-lg font-medium transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="relative w-full group overflow-hidden rounded-xl text-sm sm:text-lg font-medium transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 group-hover:opacity-90 transition-opacity" />
-            <div className="relative flex items-center justify-center backdrop-blur-sm px-6 py-4 text-white">
+            <div className="relative flex items-center justify-center backdrop-blur-sm px-2 sm:px-6 py-2 sm:py-4 text-white">
               {loading ? (
-                <Loader2 className="w-6 h-6 animate-spin mr-3" />
+                <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin mr-2 sm:mr-3" />
               ) : null}
               <span>
                 {loading ? "Verifying..." : "Continue to FitBites AI"}
@@ -103,7 +101,7 @@ export default function LoginForm({ onSuccess, onNewUser }) {
           </button>
         </form>
 
-        <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-6 sm:mt-8 text-center text-[11px] sm:text-sm text-gray-500 dark:text-gray-400">
           By continuing, you agree to our{" "}
           <a href="#" className="text-blue-400 hover:text-blue-500">
             Terms of Service
@@ -141,4 +139,3 @@ styleTag.textContent = `
     animation: gradient 3s linear infinite;
   }
 `;
-document.head.appendChild(styleTag);
