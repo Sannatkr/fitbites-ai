@@ -9,6 +9,33 @@ import FoodDetails from "@/components/FoodDetails";
 import UploadSection from "@/components/UploadSection";
 import { toast } from "react-hot-toast";
 
+const createFileFromInput = async (input, fileName) => {
+  // If it's already a File object (from dropzone)
+  if (input instanceof File) {
+    return input;
+  }
+
+  // If it's a data URL (from camera)
+  if (typeof input === "string" && input.startsWith("data:")) {
+    const arr = input.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    const n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    for (let i = 0; i < n; i++) {
+      u8arr[i] = bstr.charCodeAt(i);
+    }
+
+    return new File([u8arr], fileName, {
+      type: mime,
+      lastModified: Date.now(),
+    });
+  }
+
+  throw new Error("Invalid input type");
+};
+
 const defaultUserData = {
   username: "Guest",
   weight: 0,
@@ -241,26 +268,27 @@ const HeroSection = () => {
     }
   };
 
-  const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];
-    setImageFile(file);
-    setImage(URL.createObjectURL(file));
-    setNutritionData(null);
-  }, []);
-
-  const handleRemoveImage = (e) => {
-    e.stopPropagation();
-    setImage(null);
-    setImageFile(null);
-    setNutritionData(null);
-  };
-
   const handleGetDetails = async () => {
-    if (!imageFile) return;
+    console.log("Button clicked");
+
+    if (!imageFile) {
+      console.log("No image file");
+      return;
+    }
+
+    console.log("Image file details:", {
+      name: imageFile.name,
+      type: imageFile.type,
+      size: imageFile.size,
+    });
+
     setIsLoading(true);
     try {
+      console.log("Creating FormData");
       const formData = new FormData();
       formData.append("image", imageFile);
+
+      console.log("Sending request to /api/analyze");
 
       const analysisRes = await fetch("/api/analyze", {
         method: "POST",
@@ -319,12 +347,25 @@ const HeroSection = () => {
             window.pageYOffset +
             yOffset;
 
+          // Calculate current scroll position
+          const startPosition = window.pageYOffset;
+          const distance = y - startPosition;
+
+          // Smooth scroll with longer duration
           window.scrollTo({
             top: y,
             behavior: "smooth",
           });
+
+          // Optional: Add a CSS scroll-behavior to html for smoother global scrolling
+          document.documentElement.style.scrollBehavior = "smooth";
+
+          // Reset scroll behavior after animation
+          setTimeout(() => {
+            document.documentElement.style.scrollBehavior = "";
+          }, 1000); // Adjust this time based on your preference
         }
-      }, 500); // Increased delay to ensure component is mounted
+      }, 800); // Increased initial delay
     } catch (error) {
       // Only show toast for unexpected errors
       toast.error("Failed to analyze image", {
@@ -338,6 +379,27 @@ const HeroSection = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const onDrop = useCallback(async (acceptedFiles) => {
+    try {
+      const file = await createFileFromInput(
+        acceptedFiles[0],
+        acceptedFiles[0].name
+      );
+      setImageFile(file);
+      setImage(URL.createObjectURL(file));
+      setNutritionData(null);
+    } catch (error) {
+      console.error("File processing error:", error);
+    }
+  }, []);
+
+  const handleRemoveImage = (e) => {
+    e.stopPropagation();
+    setImage(null);
+    setImageFile(null);
+    setNutritionData(null);
   };
 
   const handleImageCapture = (dataUrl) => {

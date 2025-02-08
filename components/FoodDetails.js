@@ -156,13 +156,15 @@ export default function FoodDetails({ nutritionData, foodImage }) {
   // Fetch meal analysis
   useEffect(() => {
     const fetchMealAnalysis = async () => {
-      const summaryItem = nutritionData.find(
-        (item) => Object.keys(item)[0].toLowerCase() === "summary"
-      );
+      setIsLoading(true);
+      setMealAnalysis(null); // Clear previous analysis while loading
 
-      if (summaryItem) {
-        setIsLoading(true);
-        try {
+      try {
+        const summaryItem = nutritionData.find(
+          (item) => Object.keys(item)[0].toLowerCase() === "summary"
+        );
+
+        if (summaryItem) {
           const response = await fetch("/api/meal", {
             method: "POST",
             headers: {
@@ -181,11 +183,11 @@ export default function FoodDetails({ nutritionData, foodImage }) {
           }
 
           setMealAnalysis(Array.isArray(data) ? data : []);
-        } catch (error) {
-          toast.error("Failed to analyze meal");
-        } finally {
-          setIsLoading(false);
         }
+      } catch (error) {
+        toast.error("Failed to analyze meal");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -255,22 +257,35 @@ export default function FoodDetails({ nutritionData, foodImage }) {
             </div>
 
             {/* Analysis Points */}
-            {mealAnalysis && (
-              <div className="space-y-3">
-                {mealAnalysis.map((point, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="p-3 bg-white dark:bg-gray-700/50 rounded-lg
-                           text-gray-700 dark:text-gray-300 text-xs sm:text-lg font-medium"
-                  >
-                    {point}
-                  </motion.div>
-                ))}
-              </div>
-            )}
+            {/* Analysis Points */}
+            <div className="space-y-3">
+              {isLoading
+                ? // Skeleton loader array
+                  Array.from({ length: 3 }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="p-3 bg-white dark:bg-gray-700/50 rounded-lg animate-pulse"
+                    >
+                      <div className="space-y-2">
+                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded-md w-[90%]" />
+                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded-md w-[70%]" />
+                      </div>
+                    </div>
+                  ))
+                : // Actual content (remove the mealAnalysis check)
+                  mealAnalysis?.map((point, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="p-3 bg-white dark:bg-gray-700/50 rounded-lg
+                text-gray-700 dark:text-gray-300 text-xs sm:text-lg font-medium"
+                    >
+                      {point}
+                    </motion.div>
+                  ))}
+            </div>
           </motion.div>
         </div>
 
@@ -427,10 +442,10 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                   animate={{ opacity: 1, y: 0 }}
                 >
                   <div className="flex justify-between gap-4 items-center">
-                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <div className="text-sm sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
                       Dietary Profile
                     </div>
-                    <div className="text-sm sm:text-xl font-medium text-gray-700 dark:text-gray-300">
+                    <div className="text-xs sm:text-xl font-medium text-gray-700 dark:text-gray-300">
                       {dietCompatibility}
                     </div>
                   </div>

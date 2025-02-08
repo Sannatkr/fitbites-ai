@@ -3,6 +3,7 @@ import { Upload, Camera, ImagePlus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/utils/ui/button";
 import { toast } from "react-hot-toast";
+import { processImageForUpload } from "@/utils/imageConverter";
 
 const uploadTips = [
   {

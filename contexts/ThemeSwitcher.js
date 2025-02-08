@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Sun, Moon } from "lucide-react";
 
 const ThemeSwitcher = () => {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(false); // Already defaults to false/light
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setIsDark(true);
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
+    // Remove dark class if it exists, ensuring light theme by default
+    document.documentElement.classList.remove("dark");
+  }, []); // Run once on mount
 
   const toggleTheme = () => {
     setIsDark(!isDark);
@@ -19,7 +17,7 @@ const ThemeSwitcher = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg  transition-all duration-300 animate-in"
+      className="p-2 rounded-lg transition-all duration-300 animate-in"
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
     >
       {!isDark ? (
