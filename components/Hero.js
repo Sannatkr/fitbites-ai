@@ -329,6 +329,13 @@ const HeroSection = () => {
     const file = dataURLtoFile(dataUrl, "camera-capture.jpg");
     setImageFile(file);
     setImage(URL.createObjectURL(file));
+    setNutritionData(null); // Reset nutrition data when new image is captured
+
+    // Scroll back to upload section if FoodDetails is visible
+    const uploadSection = document.querySelector("#upload-section");
+    if (uploadSection) {
+      uploadSection.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -412,12 +419,12 @@ const HeroSection = () => {
                   ease: "easeIn",
                 },
               }}
-              className="bg-white/10 backdrop-blur-md rounded-lg p-6 shadow-xl"
+              className="bg-white/10 backdrop-blur-md rounded-lg p-4 sm:p-6 shadow-xl min-h-[120px] flex flex-col justify-center"
             >
-              <div className="text-3xl mb-2">
+              <div className="text-2xl sm:text-3xl mb-2">
                 {nutritionMyths[currentMythIndex].icon}
               </div>
-              <p className="text-lg italic text-gray-800 dark:text-blue-200">
+              <p className="text-sm sm:text-lg italic text-gray-800 dark:text-blue-200">
                 {nutritionMyths[currentMythIndex].myth}
               </p>
             </motion.div>
@@ -442,7 +449,7 @@ const HeroSection = () => {
 
     return (
       <>
-        <div className="w-full">
+        <div className="w-full" id="upload-section">
           <AnimatePresence mode="wait">
             {!image ? (
               <motion.div
@@ -491,7 +498,7 @@ const HeroSection = () => {
                   </motion.button>
                 </div>
 
-                {/* Analysis Button with Text Carousel */}
+                {/* Always show the Get Details button when there's an image */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -501,30 +508,17 @@ const HeroSection = () => {
                 >
                   <Button
                     onClick={handleGetDetails}
+                    disabled={isLoading}
                     className="relative w-full bg-gradient-to-r from-blue-600/90 via-purple-500/90 to-blue-600/90
-                            dark:from-blue-600/90 dark:via-purple-500/90 dark:to-blue-600/90
-                            text-white font-medium py-3.5 rounded-lg 
-                              overflow-hidden group shadow-[0_2px_12px_-3px_rgba(99,102,241,0.4)] 
-                              dark:shadow-[0_2px_12px_-3px_rgba(99,102,241,0.3)]
-                              border border-blue-400/20 dark:border-purple-400/20
-                              hover:shadow-[0_4px_16px_-4px_rgba(99,102,241,0.5)] 
-                              dark:hover:shadow-[0_4px_16px_-4px_rgba(99,102,241,0.4)]
-                              transition-all duration-300"
+              dark:from-blue-600/90 dark:via-purple-500/90 dark:to-blue-600/90
+              text-white font-medium py-3.5 rounded-lg 
+              overflow-hidden group shadow-[0_2px_12px_-3px_rgba(99,102,241,0.4)] 
+              dark:shadow-[0_2px_12px_-3px_rgba(99,102,241,0.3)]
+              border border-blue-400/20 dark:border-purple-400/20
+              hover:shadow-[0_4px_16px_-4px_rgba(99,102,241,0.5)] 
+              dark:hover:shadow-[0_4px_16px_-4px_rgba(99,102,241,0.4)]
+              transition-all duration-300"
                   >
-                    {/* Shine effect */}
-                    {/* <motion.div
-                      className="absolute inset-0 w-1/4 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full"
-                      animate={{
-                        translateX: ["-100%", "400%"],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        repeatDelay: 3,
-                        ease: "easeInOut",
-                      }}
-                    /> */}
-
                     {/* Text carousel container */}
                     <div className="relative overflow-hidden h-7">
                       <AnimatePresence mode="wait">
@@ -540,9 +534,15 @@ const HeroSection = () => {
                           className="flex items-center justify-center gap-3 absolute inset-0"
                         >
                           <span className="text-base font-semibold text-white">
-                            {buttonStates[currentButtonIndex].text}
+                            {isLoading
+                              ? "Analyzing..."
+                              : buttonStates[currentButtonIndex].text}
                           </span>
-                          {buttonStates[currentButtonIndex].icon}
+                          {isLoading ? (
+                            <Loader2 className="w-6 h-6 animate-spin" />
+                          ) : (
+                            buttonStates[currentButtonIndex].icon
+                          )}
                         </motion.div>
                       </AnimatePresence>
                     </div>
@@ -550,7 +550,7 @@ const HeroSection = () => {
                     {/* Hover effect overlay */}
                     <div
                       className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-400/20 to-blue-500/0 
-                  opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     />
                   </Button>
                 </motion.div>

@@ -8,24 +8,30 @@ export default {
   ],
   theme: {
     extend: {
-      animation: {
-        shine: "shine 4s ease-in-out infinite",
-      },
       keyframes: {
-        shine: {
-          to: {
-            "background-position": "200% center",
+        slide: {
+          from: { transform: "translateX(-100%)" },
+          to: { transform: "translateX(100%)" },
+          shine: {
+            to: {
+              "background-position": "200% center",
+            },
+          },
+          wiggle: {
+            "0%, 100%": { transform: "rotate(-3deg)" },
+            "50%": { transform: "rotate(3deg)" },
           },
         },
+        gradient: {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
       },
       animation: {
+        slide: "slide 3s linear infinite",
+        gradient: "gradient 3s linear infinite",
+        shine: "shine 4s ease-in-out infinite",
         wiggle: "wiggle 1s ease-in-out infinite",
-      },
-      keyframes: {
-        wiggle: {
-          "0%, 100%": { transform: "rotate(-3deg)" },
-          "50%": { transform: "rotate(3deg)" },
-        },
       },
       colors: {
         background: "var(--background)",

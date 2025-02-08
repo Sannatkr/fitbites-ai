@@ -8,39 +8,150 @@ import { toast } from "react-hot-toast";
 export default function FoodDetails({ nutritionData, foodImage }) {
   const [mealAnalysis, setMealAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [macros, setMacros] = useState({ carbs: 0, protein: 0, calories: 0 });
+  const [macros, setMacros] = useState({
+    carbs: "0g",
+    protein: "0g",
+    calories: "0 kcal",
+    fats: {
+      saturated: "0g",
+      unsaturated: "0g",
+      trans: "0g",
+    },
+    fiber: "0g",
+    sugar: "0g",
+  });
 
-  // Memoize formatted nutrition data
-  const formattedNutritionData = useMemo(() => {
-    if (!nutritionData) return [];
-    return nutritionData
-      .filter((item) => {
-        const [category] = Object.keys(item);
-        return category.toLowerCase() !== "summary";
-      })
-      .map((item) => {
-        const [category, value] = Object.entries(item)[0];
-        return { category, value: value.toString() };
-      });
-  }, [nutritionData]);
+  const [vitamins, setVitamins] = useState({
+    A: "0mcg",
+    C: "0mg",
+    D: "0mcg",
+    E: "0mg",
+  });
 
-  // Extract macros in a useEffect
+  const [minerals, setMinerals] = useState({
+    calcium: "0mg",
+    phosphorus: "0mg",
+    iron: "0mg",
+    zinc: "0mcg",
+    magnesium: "0mg",
+    sodium: "0mg",
+  });
+
+  const [dietCompatibility, setDietCompatibility] = useState("");
+
+  // Extract all nutrition data
   useEffect(() => {
     if (!nutritionData) return;
 
-    const newMacros = { carbs: 0, protein: 0, calories: 0 };
+    try {
+      nutritionData.forEach((item) => {
+        const [category, value] = Object.entries(item)[0];
+        const lowerCategory = category.toLowerCase();
 
-    nutritionData.forEach((item) => {
-      const [category, value] = Object.entries(item)[0];
-      const lowerCategory = category.toLowerCase();
-
-      if (lowerCategory.includes("carb")) newMacros.carbs = value;
-      if (lowerCategory.includes("protein")) newMacros.protein = value;
-      if (lowerCategory.includes("calorie")) newMacros.calories = value;
-    });
-
-    setMacros(newMacros);
+        if (lowerCategory.includes("carb")) {
+          setMacros((prev) => ({ ...prev, carbs: value }));
+        } else if (lowerCategory.includes("protein")) {
+          setMacros((prev) => ({ ...prev, protein: value }));
+        } else if (lowerCategory.includes("calorie")) {
+          setMacros((prev) => ({ ...prev, calories: value }));
+        } else if (lowerCategory.includes("fat")) {
+          setMacros((prev) => ({ ...prev, fats: extractFats(value) }));
+        } else if (lowerCategory.includes("fiber")) {
+          setMacros((prev) => ({ ...prev, fiber: value }));
+        } else if (lowerCategory.includes("sugar")) {
+          setMacros((prev) => ({ ...prev, sugar: value }));
+        } else if (lowerCategory.includes("vitamin")) {
+          setVitamins(extractVitamins(value));
+        } else if (lowerCategory.includes("mineral")) {
+          setMinerals(extractMinerals(value));
+        } else if (lowerCategory.includes("diet")) {
+          setDietCompatibility(value);
+        }
+      });
+    } catch (error) {
+      console.error("Error processing nutrition data:", error);
+    }
   }, [nutritionData]);
+
+  // Helper functions to extract values
+  const extractFats = (fatString) => {
+    const fats = {
+      saturated: "0g",
+      unsaturated: "0g",
+      trans: "0g",
+    };
+
+    try {
+      const fatParts = fatString.split(",").map((part) => part.trim());
+      fatParts.forEach((part) => {
+        if (part.toLowerCase().includes("saturated")) {
+          fats.saturated = part.split(":")[1]?.trim() || part;
+        } else if (part.toLowerCase().includes("unsaturated")) {
+          fats.unsaturated = part.split(":")[1]?.trim() || part;
+        } else if (part.toLowerCase().includes("trans")) {
+          fats.trans = part.split(":")[1]?.trim() || part;
+        }
+      });
+    } catch (error) {
+      console.error("Error parsing fats:", error);
+    }
+
+    return fats;
+  };
+
+  const extractVitamins = (vitaminString) => {
+    const vitamins = {
+      A: "0mcg",
+      C: "0mg",
+      D: "0mcg",
+      E: "0mg",
+    };
+
+    try {
+      const vitaminParts = vitaminString.split(",").map((part) => part.trim());
+      vitaminParts.forEach((part) => {
+        const [vitamin, value] = part.split(":");
+        if (vitamin && value) {
+          const key = vitamin.trim().charAt(0);
+          if (vitamins.hasOwnProperty(key)) {
+            vitamins[key] = value.trim();
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error parsing vitamins:", error);
+    }
+
+    return vitamins;
+  };
+
+  const extractMinerals = (mineralString) => {
+    const minerals = {
+      calcium: "0mg",
+      phosphorus: "0mg",
+      iron: "0mg",
+      zinc: "0mcg",
+      magnesium: "0mg",
+      sodium: "0mg",
+    };
+
+    try {
+      const mineralParts = mineralString.split(",").map((part) => part.trim());
+      mineralParts.forEach((part) => {
+        const [mineral, value] = part.split(":");
+        if (mineral && value) {
+          const key = mineral.trim().toLowerCase();
+          if (minerals.hasOwnProperty(key)) {
+            minerals[key] = value.trim();
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error parsing minerals:", error);
+    }
+
+    return minerals;
+  };
 
   // Fetch meal analysis
   useEffect(() => {
@@ -65,36 +176,13 @@ export default function FoodDetails({ nutritionData, foodImage }) {
           const data = await response.json();
 
           if (!response.ok || data.error) {
-            toast.error("Failed to analyze meal", {
-              duration: 4000,
-              style: {
-                border: "1px solid #EF4444", // Error red border
-                padding: "16px",
-                color: "#EF4444", // Error red text
-                backgroundColor: "#FEF2F2", // Light red background
-                borderRadius: "8px",
-                fontSize: "15px",
-                fontWeight: "500",
-              },
-              iconTheme: {
-                primary: "#EF4444", // Error red icon
-                secondary: "#FFFFFF", // White background for icon
-              },
-            });
+            toast.error("Failed to analyze meal");
             return;
           }
 
           setMealAnalysis(Array.isArray(data) ? data : []);
         } catch (error) {
-          // Only show toast for unexpected network/parsing errors
-          toast.error("Failed to analyze meal", {
-            duration: 3000,
-            style: {
-              border: "1px solid #ff4b4b",
-              padding: "16px",
-              color: "#ff4b4b",
-            },
-          });
+          toast.error("Failed to analyze meal");
         } finally {
           setIsLoading(false);
         }
@@ -106,59 +194,13 @@ export default function FoodDetails({ nutritionData, foodImage }) {
     }
   }, [nutritionData]);
 
-  if (formattedNutritionData.length === 0) {
-    return null;
-  }
+  if (!nutritionData) return null;
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-6 flex flex-col lg:flex-row gap-6">
-        {/* Nutrition Facts Table */}
-        <motion.div
-          className="bg-gray-50/95 dark:bg-gray-800/95 rounded-2xl shadow-2xl backdrop-blur-sm w-full lg:w-3/5"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="p-6">
-            <motion.h2
-              className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center"
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", bounce: 0.5 }}
-            >
-              Nutrition Facts
-            </motion.h2>
-
-            <div className="flex flex-col space-y-2">
-              {formattedNutritionData.map((item, index) => (
-                <motion.div
-                  key={item.category}
-                  className="flex items-start justify-between py-3 px-4 
-                         hover:bg-gray-100/80 dark:hover:bg-gray-700/30 
-                         rounded-lg transition-all"
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <div className="text-base sm:text-lg font-bold text-gray-500 dark:text-gray-400 uppercase">
-                    {item.category}
-                  </div>
-
-                  <div className="pl-6 text-right">
-                    <span className="text-sm sm:text-lg font-semibold text-gray-800 dark:text-gray-200">
-                      {item.value}
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Right Column */}
+        {/* Left Column - Meal Analysis */}
         <div className="w-full lg:w-2/5 flex flex-col gap-6">
-          {/* Single Card Container for Overview and Analysis */}
           <motion.div
             className="bg-gray-50/95 dark:bg-gray-800/95 rounded-2xl shadow-2xl p-6"
             initial={{ y: 50, opacity: 0 }}
@@ -199,13 +241,11 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                          border border-gray-100 dark:border-gray-600"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <div className="text-lg sm:text-2xl mb-1 grayscale">
-                    {macro.icon}
-                  </div>
-                  <div className="text-[11px] sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <div className="text-lg sm:text-2xl mb-1">{macro.icon}</div>
+                  <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                     {macro.label}
                   </div>
-                  <div className="text-xs sm:text-lg font-bold text-gray-800 dark:text-gray-200">
+                  <div className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">
                     {macro.value}
                   </div>
                 </motion.div>
@@ -221,8 +261,8 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    className="p-2 bg-white dark:bg-gray-700/50 rounded-lg
-                           text-gray-700 dark:text-gray-300 text-sm sm:text-lg font-medium"
+                    className="p-3 bg-white dark:bg-gray-700/50 rounded-lg
+                           text-gray-700 dark:text-gray-300 text-sm sm:text-base font-medium"
                   >
                     {point}
                   </motion.div>
@@ -231,6 +271,172 @@ export default function FoodDetails({ nutritionData, foodImage }) {
             )}
           </motion.div>
         </div>
+
+        {/* Right Column - Nutrition Facts */}
+        <motion.div
+          className="w-full lg:w-3/5"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="bg-gray-50/95 dark:bg-gray-800/95 rounded-2xl shadow-2xl backdrop-blur-sm p-6">
+            <motion.h2
+              className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center"
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", bounce: 0.5 }}
+            >
+              Nutrition Facts
+            </motion.h2>
+
+            <div className="space-y-2">
+              {/* Main Macros */}
+              <motion.div className="space-y-2">
+                {[
+                  { label: "Calories", value: macros.calories },
+                  { label: "Protein", value: macros.protein },
+                  { label: "Carbohydrates", value: macros.carbs },
+                ].map((item, index) => (
+                  <motion.div
+                    key={item.label}
+                    className="bg-white dark:bg-gray-700/50 rounded-xl p-4 hover:bg-gray-50"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        {item.label}
+                      </div>
+                      <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                        {item.value}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {/* Fats */}
+
+              {/* Other Macros */}
+              <div className="space-y-2">
+                {[
+                  { label: "Fiber", value: macros.fiber },
+                  { label: "Sugar", value: macros.sugar },
+                ].map((item, index) => (
+                  <motion.div
+                    key={item.label}
+                    className="bg-white dark:bg-gray-700/50 rounded-xl p-4 hover:bg-gray-50"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        {item.label}
+                      </div>
+                      <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                        {item.value}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                  Fats
+                </h3>
+                {Object.entries(macros.fats).map(([key, value], index) => (
+                  <motion.div
+                    key={key}
+                    className="bg-white dark:bg-gray-700/50 rounded-xl p-4 hover:bg-gray-50"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="text-sms font-semibold text-gray-900 dark:text-gray-100">
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                      </div>
+                      <div className="text-sms font-bold text-gray-700 dark:text-gray-300">
+                        {value}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Vitamins */}
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                  Vitamins
+                </h3>
+                {Object.entries(vitamins).map(([key, value], index) => (
+                  <motion.div
+                    key={key}
+                    className="bg-white dark:bg-gray-700/50 rounded-xl p-4 hover:bg-gray-50"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        Vitamin {key}
+                      </div>
+                      <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                        {value}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Minerals */}
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                  Minerals
+                </h3>
+                {Object.entries(minerals).map(([key, value], index) => (
+                  <motion.div
+                    key={key}
+                    className="bg-white dark:bg-gray-700/50 rounded-xl p-4 hover:bg-gray-50"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                      </div>
+                      <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                        {value}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Diet Compatibility */}
+              {dietCompatibility && (
+                <motion.div
+                  className="bg-white dark:bg-gray-700/50 rounded-xl py-4 px-2 hover:bg-gray-50"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <div className="flex justify-between gap-4 items-center">
+                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      Dietary Profile
+                    </div>
+                    <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                      {dietCompatibility}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
