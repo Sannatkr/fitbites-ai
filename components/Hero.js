@@ -310,6 +310,21 @@ const HeroSection = () => {
       }
 
       setNutritionData(data);
+      setTimeout(() => {
+        const foodDetailsElement = document.querySelector("#food-details");
+        if (foodDetailsElement) {
+          const yOffset = -80;
+          const y =
+            foodDetailsElement.getBoundingClientRect().top +
+            window.pageYOffset +
+            yOffset;
+
+          window.scrollTo({
+            top: y,
+            behavior: "smooth",
+          });
+        }
+      }, 500); // Increased delay to ensure component is mounted
     } catch (error) {
       // Only show toast for unexpected errors
       toast.error("Failed to analyze image", {
@@ -619,6 +634,7 @@ const HeroSection = () => {
 
         {nutritionData && (
           <motion.div
+            id="food-details" // Add this ID
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}

@@ -207,7 +207,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-blue-700 dark:text-blue-600 mb-6">
               Meal Analysis
             </h3>
 
@@ -241,7 +241,9 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                          border border-gray-100 dark:border-gray-600"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <div className="text-lg sm:text-2xl mb-1">{macro.icon}</div>
+                  <div className="text-lg sm:text-2xl mb-1 opacity-75 grayscale brightness-90">
+                    {macro.icon}
+                  </div>
                   <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                     {macro.label}
                   </div>
@@ -262,7 +264,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
                     className="p-3 bg-white dark:bg-gray-700/50 rounded-lg
-                           text-gray-700 dark:text-gray-300 text-sm sm:text-base font-medium"
+                           text-gray-700 dark:text-gray-300 text-xs sm:text-lg font-medium"
                   >
                     {point}
                   </motion.div>
@@ -281,7 +283,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
         >
           <div className="bg-gray-50/95 dark:bg-gray-800/95 rounded-2xl shadow-2xl backdrop-blur-sm p-6">
             <motion.h2
-              className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center"
+              className="text-lg sm:text-2xl font-bold text-blue-700 dark:text-blue-600 mb-6 text-center"
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", bounce: 0.5 }}
@@ -305,10 +307,10 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="flex justify-between items-center">
-                      <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      <div className="text-sm sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
                         {item.label}
                       </div>
-                      <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                      <div className="text-sm sm:text-xl font-medium text-gray-700 dark:text-gray-300">
                         {item.value}
                       </div>
                     </div>
@@ -332,10 +334,10 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="flex justify-between items-center">
-                      <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      <div className="text-sm sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
                         {item.label}
                       </div>
-                      <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                      <div className="text-sm sm:text-xl font-medium text-gray-700 dark:text-gray-300">
                         {item.value}
                       </div>
                     </div>
@@ -344,7 +346,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                <h3 className="text-lg sm:text-2xl font-semibold text-blue-700 dark:text-blue-600">
                   Fats
                 </h3>
                 {Object.entries(macros.fats).map(([key, value], index) => (
@@ -356,10 +358,10 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="flex justify-between items-center">
-                      <div className="text-sms font-semibold text-gray-900 dark:text-gray-100">
+                      <div className="text-sm sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
                         {key.charAt(0).toUpperCase() + key.slice(1)}
                       </div>
-                      <div className="text-sms font-bold text-gray-700 dark:text-gray-300">
+                      <div className="text-sm sm:text-xl font-medium text-gray-700 dark:text-gray-300">
                         {value}
                       </div>
                     </div>
@@ -369,7 +371,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
 
               {/* Vitamins */}
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                <h3 className="text-lg sm:text-2xl font-semibold text-blue-700 dark:text-blue-600">
                   Vitamins
                 </h3>
                 {Object.entries(vitamins).map(([key, value], index) => (
@@ -381,10 +383,10 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="flex justify-between items-center">
-                      <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      <div className="text-sm sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
                         Vitamin {key}
                       </div>
-                      <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                      <div className="text-sm sm:text-xl font-medium text-gray-700 dark:text-gray-300">
                         {value}
                       </div>
                     </div>
@@ -394,7 +396,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
 
               {/* Minerals */}
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                <h3 className="text-lg sm:text-2xl font-semibold text-blue-700 dark:text-blue-600">
                   Minerals
                 </h3>
                 {Object.entries(minerals).map(([key, value], index) => (
@@ -406,10 +408,10 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="flex justify-between items-center">
-                      <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      <div className="text-sm sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
                         {key.charAt(0).toUpperCase() + key.slice(1)}
                       </div>
-                      <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                      <div className="text-sm sm:text-xl font-medium text-gray-700 dark:text-gray-300">
                         {value}
                       </div>
                     </div>
@@ -425,10 +427,10 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                   animate={{ opacity: 1, y: 0 }}
                 >
                   <div className="flex justify-between gap-4 items-center">
-                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    <div className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                       Dietary Profile
                     </div>
-                    <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                    <div className="text-sm sm:text-xl font-medium text-gray-700 dark:text-gray-300">
                       {dietCompatibility}
                     </div>
                   </div>
