@@ -171,69 +171,53 @@ const EditMetricsForm = ({ initialData, onUpdate, onClose, isLoading }) => {
   ];
 
   return (
-    <motion.div
-      className="fixed inset-0 z-[999]"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      {/* Single backdrop */}
+    <div className="fixed inset-0 z-[999] overflow-y-auto">
+      {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/60 backdrop-blur-[2px]"
         onClick={onClose}
       />
 
-      {/* Modal container */}
-      <div className="relative h-full flex items-center justify-center p-4">
-        <motion.div
-          className="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.95, opacity: 0 }}
+      {/* Modal wrapper */}
+      <div className="relative min-h-screen flex items-center justify-center px-4 py-6 sm:py-12">
+        <div
+          className="relative w-full max-w-lg bg-white dark:bg-gray-800 rounded-2xl shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="relative bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl">
-            <div className="absolute inset-0 bg-white/10 rounded-t-2xl" />
-            <h2 className="relative text-2xl font-bold text-white text-center">
+          <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 p-5 sm:p-6 rounded-t-2xl">
+            <h2 className="text-xl sm:text-2xl font-bold text-white text-center">
               Update Your Metrics
             </h2>
             <button
               onClick={onClose}
               disabled={isLoading}
-              className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors"
+              className="absolute top-4 right-4 p-1.5 rounded-lg text-white/90 hover:text-white hover:bg-white/10"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-5">
             {/* Weight Input */}
             <div className="space-y-2">
               <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
                 <Scale className="w-4 h-4 mr-2" />
                 Weight (kg)
               </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  name="weight"
-                  value={formData.weight}
-                  onChange={handleChange}
-                  className={`w-full p-3 rounded-lg border ${
-                    validationErrors.weight
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                  } bg-white dark:bg-gray-700 focus:ring-2 outline-none transition-all`}
-                  placeholder="Enter weight in kg"
-                />
-                {validationErrors.weight && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {validationErrors.weight}
-                  </p>
-                )}
-              </div>
+              <input
+                type="number"
+                name="weight"
+                value={formData.weight}
+                onChange={handleChange}
+                className="w-full p-3 text-[16px] rounded-xl border bg-white dark:bg-gray-700 
+                       border-gray-200 dark:border-gray-600 
+                       focus:border-blue-500 dark:focus:border-blue-400
+                       focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20
+                       outline-none"
+                placeholder="Enter weight in kg"
+              />
             </div>
 
             {/* Height Inputs */}
@@ -243,44 +227,21 @@ const EditMetricsForm = ({ initialData, onUpdate, onClose, isLoading }) => {
                 Height
               </label>
               <div className="grid grid-cols-2 gap-4">
-                <div className="relative">
+                {["heightFt", "heightIn"].map((heightType) => (
                   <input
+                    key={heightType}
                     type="number"
-                    name="heightFt"
-                    value={formData.heightFt}
+                    name={heightType}
+                    value={formData[heightType]}
                     onChange={handleChange}
-                    className={`w-full p-3 rounded-lg border ${
-                      validationErrors.heightFt
-                        ? "border-red-500 focus:ring-red-500"
-                        : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                    } bg-white dark:bg-gray-700 focus:ring-2 outline-none transition-all`}
-                    placeholder="Feet"
+                    className="w-full p-3 text-[16px] rounded-xl border bg-white dark:bg-gray-700 
+                           border-gray-200 dark:border-gray-600 
+                           focus:border-blue-500 dark:focus:border-blue-400
+                           focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20
+                           outline-none"
+                    placeholder={heightType === "heightFt" ? "Feet" : "Inches"}
                   />
-                  {validationErrors.heightFt && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {validationErrors.heightFt}
-                    </p>
-                  )}
-                </div>
-                <div className="relative">
-                  <input
-                    type="number"
-                    name="heightIn"
-                    value={formData.heightIn}
-                    onChange={handleChange}
-                    className={`w-full p-3 rounded-lg border ${
-                      validationErrors.heightIn
-                        ? "border-red-500 focus:ring-red-500"
-                        : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                    } bg-white dark:bg-gray-700 focus:ring-2 outline-none transition-all`}
-                    placeholder="Inches"
-                  />
-                  {validationErrors.heightIn && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {validationErrors.heightIn}
-                    </p>
-                  )}
-                </div>
+                ))}
               </div>
             </div>
 
@@ -290,25 +251,18 @@ const EditMetricsForm = ({ initialData, onUpdate, onClose, isLoading }) => {
                 <Calendar className="w-4 h-4 mr-2" />
                 Age
               </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  name="age"
-                  value={formData.age}
-                  onChange={handleChange}
-                  className={`w-full p-3 rounded-lg border ${
-                    validationErrors.age
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                  } bg-white dark:bg-gray-700 focus:ring-2 outline-none transition-all`}
-                  placeholder="Enter your age"
-                />
-                {validationErrors.age && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {validationErrors.age}
-                  </p>
-                )}
-              </div>
+              <input
+                type="number"
+                name="age"
+                value={formData.age}
+                onChange={handleChange}
+                className="w-full p-3 text-[16px] rounded-xl border bg-white dark:bg-gray-700 
+                       border-gray-200 dark:border-gray-600 
+                       focus:border-blue-500 dark:focus:border-blue-400
+                       focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20
+                       outline-none"
+                placeholder="Enter your age"
+              />
             </div>
 
             {/* Activity Level Select */}
@@ -322,56 +276,72 @@ const EditMetricsForm = ({ initialData, onUpdate, onClose, isLoading }) => {
                   name="activityLevel"
                   value={formData.activityLevel}
                   onChange={handleChange}
-                  className={`w-full p-3 rounded-lg border ${
-                    validationErrors.activityLevel
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
-                  } bg-white dark:bg-gray-700 focus:ring-2 outline-none transition-all`}
+                  className="w-full h-11 pl-3 pr-10 text-[16px] rounded-xl border bg-white dark:bg-gray-700 
+               border-gray-200 dark:border-gray-600 
+               focus:border-blue-500 dark:focus:border-blue-400
+               focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20
+               outline-none appearance-none"
                 >
                   <option value="">Select Activity Level</option>
                   {activityLevels.map((level) => (
                     <option key={level.value} value={level.value}>
-                      {level.icon} {level.label} - {level.description}
+                      {level.label}
                     </option>
                   ))}
                 </select>
-                {validationErrors.activityLevel && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {validationErrors.activityLevel}
-                  </p>
-                )}
+                {/* Single dropdown arrow */}
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
 
-            {/* Form Actions */}
+            {/* Buttons */}
+            {/* Buttons */}
             <div className="flex gap-3 pt-4">
-              <Button
+              <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-lg transition-all duration-200"
                 disabled={isLoading}
+                className="flex-1 px-4 py-2.5 text-sm font-medium
+             bg-gray-100 dark:bg-gray-700 rounded-xl
+             hover:bg-gray-200 dark:hover:bg-gray-600
+             disabled:opacity-50"
               >
                 Cancel
-              </Button>
-              <Button
+              </button>
+              <button
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 disabled:opacity-50"
                 disabled={isLoading}
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-white
+             bg-gradient-to-r from-blue-600 to-purple-600
+             hover:from-blue-700 hover:to-purple-700
+             rounded-xl disabled:opacity-50"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     <span>Updating...</span>
                   </div>
                 ) : (
                   "Save Changes"
                 )}
-              </Button>
+              </button>
             </div>
           </form>
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -485,7 +455,7 @@ const MetricsCard = ({
           {/* Header with reduced bottom margin */}
           <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6 px-2">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              {username}'s Health Journey ✨
+              {username}'s Health Metrics
             </h2>
             <button
               onClick={() => setIsEditModalOpen(true)}

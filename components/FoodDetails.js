@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 
 export default function FoodDetails({ nutritionData, foodImage }) {
   const [mealAnalysis, setMealAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const [macros, setMacros] = useState({
     carbs: "0g",
     protein: "0g",
@@ -154,10 +155,11 @@ export default function FoodDetails({ nutritionData, foodImage }) {
   };
 
   // Fetch meal analysis
+
   useEffect(() => {
     const fetchMealAnalysis = async () => {
       setIsLoading(true);
-      setMealAnalysis(null); // Clear previous analysis while loading
+      setMealAnalysis(null);
 
       try {
         const summaryItem = nutritionData.find(
@@ -249,7 +251,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                   <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                     {macro.label}
                   </div>
-                  <div className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">
+                  <div className="text-xs sm:text-lg font-bold text-gray-800 dark:text-gray-200">
                     {macro.value}
                   </div>
                 </motion.div>
@@ -442,7 +444,7 @@ export default function FoodDetails({ nutritionData, foodImage }) {
                   animate={{ opacity: 1, y: 0 }}
                 >
                   <div className="flex justify-between gap-4 items-center">
-                    <div className="text-sm sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <div className="text-xs sm:text-xl font-semibold text-blue-700 dark:text-blue-600">
                       Dietary Profile
                     </div>
                     <div className="text-xs sm:text-xl font-medium text-gray-700 dark:text-gray-300">

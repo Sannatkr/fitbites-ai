@@ -21,6 +21,8 @@ export async function POST(req) {
 
     const analysis = await analyzeMealSummary(summary);
 
+    console.log("Analysis are: ", analysis);
+
     return new Response(JSON.stringify(analysis), {
       status: 200,
       headers: { "Content-Type": "application/json" },

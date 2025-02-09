@@ -56,7 +56,7 @@ const WelcomeForm = ({ phoneNumber, onSuccess }) => {
           <h2 className="text-lg sm:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 bg-clip-text text-transparent animate-gradient">
             Personalize Your Journey
           </h2>
-          <p className="text-xs sm:text-xl text-gray-600 dark:text-gray-300 font-light">
+          <p className="text-[16px] sm:text-xl text-gray-600 dark:text-gray-300 font-light">
             Let's craft the perfect health plan for you!
           </p>
         </div>
@@ -80,7 +80,7 @@ const WelcomeForm = ({ phoneNumber, onSuccess }) => {
                   onChange={handleChange}
                   onFocus={() => setFocusedInput("name")}
                   onBlur={() => setFocusedInput("")}
-                  className="block w-full outline-none bg-transparent text-[11px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
+                  className="block w-full outline-none bg-transparent text-[16px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
                   required
                 />
               </div>
@@ -103,7 +103,7 @@ const WelcomeForm = ({ phoneNumber, onSuccess }) => {
                   onChange={handleChange}
                   onFocus={() => setFocusedInput("gender")}
                   onBlur={() => setFocusedInput("")}
-                  className="block w-full outline-none bg-transparent text-[11px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
+                  className="block w-full outline-none bg-transparent text-[16px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
                   required
                 >
                   <option value="">Select Gender</option>
@@ -133,7 +133,7 @@ const WelcomeForm = ({ phoneNumber, onSuccess }) => {
                   onChange={handleChange}
                   onFocus={() => setFocusedInput("age")}
                   onBlur={() => setFocusedInput("")}
-                  className="block w-full outline-none bg-transparent text-[11px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
+                  className="block w-full outline-none bg-transparent text-[16px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
                   required
                 />
               </div>
@@ -158,7 +158,7 @@ const WelcomeForm = ({ phoneNumber, onSuccess }) => {
                   onChange={handleChange}
                   onFocus={() => setFocusedInput("weight")}
                   onBlur={() => setFocusedInput("")}
-                  className="block w-full outline-none bg-transparent text-[11px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
+                  className="block w-full outline-none bg-transparent text-[16px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
                   required
                 />
               </div>
@@ -189,7 +189,7 @@ const WelcomeForm = ({ phoneNumber, onSuccess }) => {
                       onChange={handleChange}
                       onFocus={() => setFocusedInput(heightType)}
                       onBlur={() => setFocusedInput("")}
-                      className="block w-full outline-none bg-transparent text-[11px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
+                      className="block w-full outline-none bg-transparent text-[16px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
                       required
                     />
                   </div>
@@ -214,7 +214,7 @@ const WelcomeForm = ({ phoneNumber, onSuccess }) => {
                   onChange={handleChange}
                   onFocus={() => setFocusedInput("activityLevel")}
                   onBlur={() => setFocusedInput("")}
-                  className="block w-full outline-none bg-transparent text-[11px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0 font-emoji"
+                  className="block w-full outline-none bg-transparent text-[16px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0 font-emoji"
                   required
                 >
                   <option value="">Select Activity Level</option>

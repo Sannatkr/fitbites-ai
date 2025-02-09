@@ -64,15 +64,15 @@ export default function Header() {
         </nav>
 
         {/* Right Side: Theme Switcher, Logout, and Mobile Menu Button */}
-        <div className="flex items-center space-x-4">
-          <div className="dark:hover:bg-gray-700 hover:bg-gray-200 p-2 rounded-lg transition-colors">
+        <div className="flex items-center space-x-2">
+          <div className="dark:hover:bg-gray-700 hover:bg-gray-200 p-1 rounded-lg transition-colors">
             <ThemeSwitcher />
           </div>
 
           {pathname.startsWith("/dashboard") && (
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-1 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors md:px-4 md:py-2 md:bg-gradient-to-r md:from-blue-600 md:via-purple-500 md:to-pink-500 md:text-white md:hover:from-blue-700 md:hover:to-pink-600"
+              className="flex items-center space-x-1 p-1 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors md:px-4 md:py-2 md:bg-gradient-to-r md:from-blue-600 md:via-purple-500 md:to-pink-500 md:text-white md:hover:from-blue-700 md:hover:to-pink-600"
             >
               <LogOut className="w-4 h-4" />
               <span className="hidden md:inline">Logout</span>
@@ -82,7 +82,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors md:hidden"
+            className="p-1 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors md:hidden"
           >
             <AnimatePresence mode="wait">
               {isMenuOpen ? (

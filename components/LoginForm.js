@@ -35,7 +35,7 @@ export default function LoginForm({ onSuccess, onNewUser }) {
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto p-4 sm:p-8">
+    <div className="w-full max-w-2xl mx-auto p-4 sm:p-8">
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-12 shadow-2xl">
         <div className="mb-8 sm:mb-12 text-center relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-20 sm:h-24 bg-blue-400/20 rounded-full blur-2xl animate-pulse" />
@@ -45,7 +45,7 @@ export default function LoginForm({ onSuccess, onNewUser }) {
                 Welcome to FitBites AI
               </h1>
             </div>
-            <p className="text-[12px] sm:text-xl text-gray-600 dark:text-gray-300 font-light tracking-wide">
+            <p className="text-sm sm:text-xl text-gray-600 dark:text-gray-300 font-light tracking-wide">
               Your personal nutrition assistant
             </p>
             <div className="absolute w-full h-1 bottom-0 left-0 bg-gradient-to-r from-transparent via-blue-400 to-transparent animate-slide" />
@@ -70,7 +70,7 @@ export default function LoginForm({ onSuccess, onNewUser }) {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   placeholder="Enter your phone number"
-                  className="block w-full outline-none bg-transparent text-[11px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
+                  className="block w-full outline-none bg-transparent text-[16px] sm:text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:ring-0"
                   required
                 />
               </div>
@@ -101,7 +101,7 @@ export default function LoginForm({ onSuccess, onNewUser }) {
           </button>
         </form>
 
-        <div className="mt-6 sm:mt-8 text-center text-[11px] sm:text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-6 sm:mt-8 text-center text-[16px] sm:text-sm text-gray-500 dark:text-gray-400">
           By continuing, you agree to our{" "}
           <a href="#" className="text-blue-400 hover:text-blue-500">
             Terms of Service
