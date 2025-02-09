@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import icon from "@/public/icon.png";
 import { useRouter, usePathname } from "next/navigation";
 import Cookies from "js-cookie";
 import ThemeSwitcher from "../contexts/ThemeSwitcher.js";
@@ -38,13 +40,18 @@ export default function Header() {
 
   return (
     <header className="bg-transparent w-full z-20 fixed top-0 left-0 shadow-md backdrop-blur-lg rounded-sm">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div className="container mx-auto px-4 py-2 flex justify-between items-center">
         {/* Left Side: Logo */}
-        <Link
-          href="/"
-          className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 bg-clip-text text-transparent"
-        >
-          FitBites AI
+        <Link href="/" className="flex items-center space-x-2">
+          <div className="relative w-20 h-20">
+            <Image
+              src="/icon.png"
+              alt="FitBites AI Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
         </Link>
 
         {/* Center: Navigation Links (Desktop) */}
@@ -54,7 +61,7 @@ export default function Header() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="text-gray-600 dark:text-gray-300 sm:text-xl hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 >
                   {link.text}
                 </Link>
